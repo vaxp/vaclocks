@@ -177,10 +177,12 @@ class _Segmented extends StatelessWidget {
                 onTap: () => onChanged(i),
                 borderRadius: BorderRadius.circular(8),
                 child: AnimatedContainer(
+                  height: 36,
+
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(
                     color: i == current
-                        ? theme.colorScheme.surfaceContainerHighest
+                        ? const Color.fromARGB(26, 255, 255, 255)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                   ),
