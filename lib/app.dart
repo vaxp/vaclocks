@@ -27,7 +27,9 @@ class _VaclocksAppState extends State<VaclocksApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => WorldClockBloc(WorldClockRepositoryImpl())..add(WorldClockStarted()),
+          create: (_) =>
+              WorldClockBloc(WorldClockRepositoryImpl())
+                ..add(WorldClockStarted()),
         ),
         BlocProvider(create: (_) => AlarmBloc()),
         BlocProvider(create: (_) => StopwatchBloc()),
@@ -44,7 +46,10 @@ class _VaclocksAppState extends State<VaclocksApp> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 child: _Header(
                   index: _index,
                   onChanged: (i) => setState(() => _index = i),
@@ -81,25 +86,40 @@ class _Header extends StatelessWidget {
           icon: Icons.add,
           onPressed: () {
             if (index == 0) {
-              context.read<WorldClockBloc>().add(WorldClockAddRequested(context: context));
+              context.read<WorldClockBloc>().add(
+                WorldClockAddRequested(context: context),
+              );
             } else if (index == 1) {
               context.read<AlarmBloc>().add(AlarmAddRequested());
             }
           },
         ),
         const SizedBox(width: 8),
+
         Expanded(
-          child: _Segmented(
-            current: index,
-            onChanged: onChanged,
-            items: const [
-              (Icons.public, 'World'),
-              (Icons.alarm, 'Alarms'),
-              (Icons.timer_outlined, 'Stopwatch'),
-              (Icons.hourglass_bottom, 'Timer'),
-            ],
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromARGB(24, 255, 255, 255), // لون الحد
+                width: 1.0, // سمك الحد
+              ),
+              borderRadius: BorderRadius.circular(
+                8,
+              ), // نصف قطر الزوايا (اختياري)
+            ),
+            child: _Segmented(
+              current: index,
+              onChanged: onChanged,
+              items: const [
+                (Icons.public, 'World'),
+                (Icons.alarm, 'Alarms'),
+                (Icons.timer_outlined, 'Stopwatch'),
+                (Icons.hourglass_bottom, 'Timer'),
+              ],
+            ),
           ),
         ),
+
         const SizedBox(width: 8),
         _IconButton(icon: Icons.menu, onPressed: () {}),
         const SizedBox(width: 8),
@@ -130,7 +150,11 @@ class _IconButton extends StatelessWidget {
 }
 
 class _Segmented extends StatelessWidget {
-  const _Segmented({required this.current, required this.onChanged, required this.items});
+  const _Segmented({
+    required this.current,
+    required this.onChanged,
+    required this.items,
+  });
   final int current;
   final ValueChanged<int> onChanged;
   final List<(IconData, String)> items;
@@ -142,7 +166,7 @@ class _Segmented extends StatelessWidget {
       height: 40,
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -151,12 +175,14 @@ class _Segmented extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () => onChanged(i),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(
-                    color: i == current ? theme.colorScheme.surfaceContainerHighest : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
+                    color: i == current
+                        ? theme.colorScheme.surfaceContainerHighest
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
@@ -175,5 +201,3 @@ class _Segmented extends StatelessWidget {
     );
   }
 }
-
-

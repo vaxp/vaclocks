@@ -14,7 +14,7 @@ ThemeData buildAppTheme(BuildContext context) {
     onSecondaryContainer: Colors.white,
   );
 
-  final scaffoldBg = const Color.fromARGB(183, 0, 0, 0).withOpacity(0.3);
+  final scaffoldBg = const Color.fromARGB(183, 0, 0, 0);
 
   return ThemeData(
     useMaterial3: true,
@@ -28,12 +28,12 @@ ThemeData buildAppTheme(BuildContext context) {
       labelLarge: TextStyle(color: Colors.white),
     ),
     iconTheme: const IconThemeData(color: Colors.white70),
-    appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent, foregroundColor: Colors.white),
+    appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent, foregroundColor: Color.fromARGB(255, 255, 255, 255),shape: RoundedRectangleBorder(side: BorderSide(color:  Color.fromARGB(24, 255, 255, 255))),),
     cardTheme: CardThemeData(
       color: Colors.black45,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12),side: BorderSide(color: const Color.fromARGB(24, 255, 255, 255))),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     ),
     chipTheme: ChipThemeData(
