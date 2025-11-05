@@ -76,7 +76,14 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, "vaclocks");
   }
 
-  gtk_window_set_default_size(window, 720, 520);
+  gtk_window_set_default_size(window, 720, 620);
+  gtk_window_set_resizable(window, FALSE);
+  gtk_widget_set_size_request(GTK_WIDGET(window), 720, 620);
+  gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+
+
+
+
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
