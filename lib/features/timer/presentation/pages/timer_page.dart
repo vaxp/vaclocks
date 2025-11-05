@@ -21,12 +21,14 @@ class TimerPage extends StatelessWidget {
       builder: (context, state) {
         return Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 24),
               Text(formatCountdown(state.remainingMs), style: Theme.of(context).textTheme.displaySmall),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 8,
+                alignment: WrapAlignment.center,
                 children: [
                   for (final m in [1, 3, 5, 10])
                     ActionChip(

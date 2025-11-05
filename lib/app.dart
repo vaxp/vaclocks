@@ -58,7 +58,7 @@ class _VaclocksAppState extends State<VaclocksApp> {
               WorldClockPage(),
               AlarmsPage(),
               StopwatchPage(),
-              Center(child: TimerPage()),
+              TimerPage(),
             ],
           ),
         ),
