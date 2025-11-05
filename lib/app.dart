@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/l10n/app_localizations.dart';
+import 'core/l10n/locale_cubit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'features/alarms/presentation/bloc/alarm_bloc.dart';
 import 'features/alarms/presentation/pages/alarms_page.dart';
 import 'features/stopwatch/presentation/bloc/stopwatch_bloc.dart';
@@ -34,13 +38,24 @@ class _VaclocksAppState extends State<VaclocksApp> {
         BlocProvider(create: (_) => AlarmBloc()),
         BlocProvider(create: (_) => StopwatchBloc()),
         BlocProvider(create: (_) => TimerBloc()),
+        BlocProvider(create: (_) => LocaleCubit()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Vaclocks',
-        theme: buildAppTheme(context),
-        navigatorKey: navigatorKey,
-        home: Scaffold(
+      child: BlocBuilder<LocaleCubit, Locale>(
+        builder: (context, locale) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Vaclocks',
+            theme: buildAppTheme(context),
+            navigatorKey: navigatorKey,
+            locale: locale,
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: const [
+              AppLocalizationsDelegate(),
+              GlobalWidgetsLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(64),
             child: SafeArea(
@@ -66,7 +81,9 @@ class _VaclocksAppState extends State<VaclocksApp> {
               TimerPage(),
             ],
           ),
-        ),
+          ),
+          );
+        },
       ),
     );
   }
@@ -110,18 +127,50 @@ class _Header extends StatelessWidget {
             child: _Segmented(
               current: index,
               onChanged: onChanged,
-              items: const [
-                (Icons.public, 'World'),
-                (Icons.alarm, 'Alarms'),
-                (Icons.timer_outlined, 'Stopwatch'),
-                (Icons.hourglass_bottom, 'Timer'),
+              items: [
+                (Icons.public, AppLocalizations.of(context).world),
+                (Icons.alarm, AppLocalizations.of(context).alarms),
+                (Icons.timer_outlined, AppLocalizations.of(context).stopwatch),
+                (Icons.hourglass_bottom, AppLocalizations.of(context).timer),
               ],
             ),
           ),
         ),
 
         const SizedBox(width: 8),
-        _IconButton(icon: Icons.menu, onPressed: () {}),
+        _IconButton(icon: Icons.menu, onPressed: () async {
+          final info = await PackageInfo.fromPlatform();
+          // ignore: use_build_context_synchronously
+          showDialog(
+            context: context,
+            builder: (_) {
+              final l10n = AppLocalizations.of(context);
+              return AlertDialog(
+                title: Text('${l10n.appName} • ${info.version}'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(l10n.language),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        FilledButton(
+                          onPressed: () => context.read<LocaleCubit>().setEnglish(),
+                          child: Text(l10n.english),
+                        ),
+                        FilledButton.tonal(
+                          onPressed: () => context.read<LocaleCubit>().setArabic(),
+                          child: Text(l10n.arabic),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        }),
         const SizedBox(width: 8),
         _IconButton(icon: Icons.close, onPressed: () {}),
       ],

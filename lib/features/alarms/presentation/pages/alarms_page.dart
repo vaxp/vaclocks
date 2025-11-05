@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vaclocks/core/l10n/app_localizations.dart';
 
 import '../bloc/alarm_bloc.dart';
 
@@ -15,12 +16,13 @@ class AlarmsPage extends StatelessWidget {
           itemCount: state.alarms.length,
           itemBuilder: (context, i) {
             final alarm = state.alarms[i];
+            final l10n = AppLocalizations.of(context);
             final time = alarm.timeOfDay.format(context);
             final repeatText = switch (alarm.repeat) {
-              AlarmRepeat.none => 'One-time',
-              AlarmRepeat.daily => 'Daily',
-              AlarmRepeat.weekly => 'Weekly',
-              AlarmRepeat.monthly => 'Monthly',
+              AlarmRepeat.none => l10n.oneTime,
+              AlarmRepeat.daily => l10n.daily,
+              AlarmRepeat.weekly => l10n.weekly,
+              AlarmRepeat.monthly => l10n.monthly,
             };
             return Card(
               child: Padding(

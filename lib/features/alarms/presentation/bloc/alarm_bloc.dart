@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaclocks/core/notifications/notification_service.dart';
 import 'package:vaclocks/core/audio/ringer.dart';
+import 'package:vaclocks/core/l10n/app_localizations.dart';
 
 enum AlarmRepeat { none, daily, weekly, monthly }
 
@@ -157,8 +158,9 @@ class _AddAlarmDialogState extends State<_AddAlarmDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('New alarm'),
+      title: Text(l10n.newAlarm),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,8 +168,8 @@ class _AddAlarmDialogState extends State<_AddAlarmDialog> {
           Wrap(
             spacing: 8,
             children: [
-              ActionChip(label: const Text('Morning (08:00)'), onPressed: () => setState(() => _time = const TimeOfDay(hour: 8, minute: 0))),
-              ActionChip(label: const Text('Evening (20:00)'), onPressed: () => setState(() => _time = const TimeOfDay(hour: 20, minute: 0))),
+              ActionChip(label: Text('${l10n.morning} (08:00)'), onPressed: () => setState(() => _time = const TimeOfDay(hour: 8, minute: 0))),
+              ActionChip(label: Text('${l10n.evening} (20:00)'), onPressed: () => setState(() => _time = const TimeOfDay(hour: 20, minute: 0))),
             ],
           ),
           const SizedBox(height: 8),
@@ -178,13 +180,13 @@ class _AddAlarmDialogState extends State<_AddAlarmDialog> {
               final picked = await showTimePicker(context: context, initialTime: _time);
               if (picked != null) setState(() => _time = picked);
             },
-                child: Text('Pick time: ${_time.format(context)}'),
+                child: Text('${l10n.pickTime}: ${_time.format(context)}'),
               ),
               const SizedBox(width: 12),
               SegmentedButton<bool>(
-                segments: const [
-                  ButtonSegment<bool>(value: false, label: Text('AM')),
-                  ButtonSegment<bool>(value: true, label: Text('PM')),
+                segments: [
+                  ButtonSegment<bool>(value: false, label: Text(l10n.am)),
+                  ButtonSegment<bool>(value: true, label: Text(l10n.pm)),
                 ],
                 selected: {_isPm},
                 onSelectionChanged: (s) {
@@ -204,22 +206,22 @@ class _AddAlarmDialogState extends State<_AddAlarmDialog> {
             spacing: 8,
             children: [
               FilterChip(
-                label: const Text('One-time'),
+                label: Text(l10n.oneTime),
                 selected: _repeat == AlarmRepeat.none,
                 onSelected: (_) => setState(() => _repeat = AlarmRepeat.none),
               ),
               FilterChip(
-                label: const Text('Daily'),
+                label: Text(l10n.daily),
                 selected: _repeat == AlarmRepeat.daily,
                 onSelected: (_) => setState(() => _repeat = AlarmRepeat.daily),
               ),
               FilterChip(
-                label: const Text('Weekly'),
+                label: Text(l10n.weekly),
                 selected: _repeat == AlarmRepeat.weekly,
                 onSelected: (_) => setState(() => _repeat = AlarmRepeat.weekly),
               ),
               FilterChip(
-                label: const Text('Monthly'),
+                label: Text(l10n.monthly),
                 selected: _repeat == AlarmRepeat.monthly,
                 onSelected: (_) => setState(() => _repeat = AlarmRepeat.monthly),
               ),
@@ -228,8 +230,8 @@ class _AddAlarmDialogState extends State<_AddAlarmDialog> {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-        FilledButton(onPressed: () => Navigator.pop(context, Alarm(timeOfDay: _time, enabled: true, repeat: _repeat)), child: const Text('Add')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+        FilledButton(onPressed: () => Navigator.pop(context, Alarm(timeOfDay: _time, enabled: true, repeat: _repeat)), child: Text(l10n.add)),
       ],
     );
   }
@@ -242,8 +244,9 @@ class _RingingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('Alarm ringing'),
+      title: Text(l10n.alarmRinging),
       content: Text(label),
       actions: [
         TextButton(
@@ -251,7 +254,7 @@ class _RingingDialog extends StatelessWidget {
             await Ringer().stop();
             if (context.mounted) Navigator.pop(context);
           },
-          child: const Text('Stop'),
+          child: Text(l10n.stop),
         ),
         FilledButton(
           onPressed: () async {
@@ -265,7 +268,7 @@ class _RingingDialog extends StatelessWidget {
             bloc.add(AlarmSnoozed(index, td));
             if (context.mounted) Navigator.pop(context);
           },
-          child: const Text('Snooze 10 min'),
+          child: Text(l10n.snooze10Min),
         ),
       ],
     );
