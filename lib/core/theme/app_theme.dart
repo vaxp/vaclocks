@@ -20,6 +20,7 @@ ThemeData buildAppTheme(BuildContext context) {
     useMaterial3: true,
     colorScheme: colorScheme,
     scaffoldBackgroundColor: scaffoldBg,
+    // ignore: deprecated_member_use
     dialogBackgroundColor: Colors.black54,
     textTheme: const TextTheme(
       titleMedium: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),

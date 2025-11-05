@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,6 +100,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
       if (context != null) {
         // ignore: use_build_context_synchronously
         await showDialog(
+          // ignore: use_build_context_synchronously
           context: context,
           barrierDismissible: false,
           builder: (_) => _RingingDialog(index: index, label: _labelFor(alarm)),
@@ -257,6 +257,7 @@ class _RingingDialog extends StatelessWidget {
           onPressed: () async {
             await Ringer().stop();
             // Snooze 10 minutes
+            // ignore: use_build_context_synchronously
             final bloc = context.read<AlarmBloc>();
             final now = DateTime.now();
             final future = now.add(const Duration(minutes: 10));

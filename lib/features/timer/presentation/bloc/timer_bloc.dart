@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vaclocks/core/notifications/notification_service.dart' as core show NotificationService;
 
 class TimerState extends Equatable {
