@@ -45,6 +45,8 @@ dependencies:
   package_info_plus: ^9.0.0
   flutter_localization: ^0.3.3
 
+  window_manager: ^0.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
